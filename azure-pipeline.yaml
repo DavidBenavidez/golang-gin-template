@@ -1,0 +1,12 @@
+trigger:
+  - main
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: template-repository-name
+jobs:
+- template: azure-devops/pipeline.yaml@templates
+  parameters:
+    projectName: ''
+    mainPath: "/cmd"

@@ -1,0 +1,28 @@
+global:
+  version: v1
+  revisionHistoryLimit: 1
+  imagePullPolicy: IfNotPresent
+  repo: dockerrepository
+
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+  env:
+    port: 8080
+
+servicename:
+  name: service-name
+  cnName: service-name
+  ouName: service-name
+  image: service-name
+  vaultRole: service-name
+  namespace: namespacename
+  replicas: "1"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"

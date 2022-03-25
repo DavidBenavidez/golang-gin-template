@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.servicename.name }}
+  namespace: {{ .Values.servicename.namespace }}
+spec:
+  replicas: {{.Values.servicename.replicas}}
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{.Values.servicename.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.servicename.name}}
+    spec:
+      imagePullSecrets:
+      - name: image-pull-secret
+      containers:
+        - name: {{ .Values.servicename.name }}
+          image:
+            {{.Values.global.repo}}/{{ .Values.servicename.image}}:{{.Chart.AppVersion}}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          resources:
+            requests:
+              cpu: {{ .Values.servicename.resources.requests.cpu | quote}}
+              memory: {{ .Values.servicename.resources.requests.memory | quote}}
+            limits:
+              cpu: {{ .Values.servicename.resources.limits.cpu | quote}}
+              memory: {{ .Values.servicename.resources.limits.memory | quote }}
+          env:
+            - name: PORT
+              value: {{ .Values.global.env.port | quote }}
+          ports:
+            {{- range $val := .Values.global.ports }}
+            - containerPort: {{ $val.port }}
+          {{- end}}
